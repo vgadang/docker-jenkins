@@ -43,7 +43,7 @@ The image comes with the following plugins installed.
 To extend this image simply create another Docker image, build it and run it.
 
 ### Extend the image to install maven 
-The image can easily be extended to include maven like so
+The image can easily be extended to include maven by creating your Dockerfile that looks like this. Build it and run the new image
 
 ```
 FROM docker.obi.aol.com/jenkins
@@ -51,8 +51,9 @@ FROM docker.obi.aol.com/jenkins
 RUN apt-get update && apt-get install -y maven
 ```
 
+
 ### Add additional plugins
-For example to add additional plugins, you can create a Dockerfile that has the following (assuming the plugins are in directory called 'plugins')
+For example to add additional plugins, you can create a Dockerfile that has the following (assuming the plugins are in directory called 'plugins'). Build it and run the new image
 
 ```
 FROM docker.obi.aol.com/jenkins
@@ -61,7 +62,7 @@ COPY plugins /usr/share/jenkins/ref/plugins
 ```
 
 ### Add additional jobs
-To add additional plugins, you can create a Dockerfile that has the following (assuming the jobs are in directory called 'jobs')
+To add additional plugins, you can create a Dockerfile that has the following (assuming the jobs are in directory called 'jobs'). Build it and run the new image
 
 ```
 FROM docker.obi.aol.com/jenkins
