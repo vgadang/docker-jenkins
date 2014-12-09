@@ -40,8 +40,33 @@ The image comes with the following plugins installed.
 * Slave agent port - 50000
 
 ## Extending this image
-To extend this image simply create anothe Docker image from this and copy your plugins and jobs into /usr/share/jenkins/ref location inside the container.
+To extend this image simply create another Docker image, build it and run it.
 
-* plugins - /usr/share/jenkins/ref/plugins
-* jobs - /usr/share/jenkins/ref/jobs
+### Extend the image to install maven 
+The image can easily be extended to include maven like so
+
+```
+FROM docker.obi.aol.com/jenkins
+
+RUN apt-get update && apt-get install -y maven
+```
+
+### Add additional plugins
+For example to add additional plugins, you can create a Dockerfile that has the following (assuming the plugins are in directory called 'plugins')
+
+```
+FROM docker.obi.aol.com/jenkins
+
+COPY plugins /usr/share/jenkins/ref/plugins
+```
+
+### Add additional jobs
+To add additional plugins, you can create a Dockerfile that has the following (assuming the jobs are in directory called 'jobs')
+
+```
+FROM docker.obi.aol.com/jenkins
+
+COPY jobs /usr/share/jenkins/ref/jobs
+```
+
 
