@@ -7,7 +7,7 @@ This provides Docker image for a base Jenkins pipeline that can be used by  appl
 The following command should get you started pretty quickly. It has most of the pipeline steps covered and all you need to do is fill in the details.
 
 ```
-docker run -p 8080:8080 docker.obi.aol.com/jenkins
+docker run -p 8080:8080 vgadang/jenkins
 ```
 
 ## Persistent data
@@ -16,7 +16,7 @@ The above command will create transient data that will be cleaned up when the do
 The following command will persist the data in the host.
 
 ```
-docker run -d -p 8080:8080 -v /data/servers/jenkins/jenkins_home:/var/jenkins_home --name=jenkins docker.obi.aol.com/jenkins
+docker run -d -p 8080:8080 -v /data/servers/jenkins/jenkins_home:/var/jenkins_home --name=jenkins vgadang/jenkins
 ```
 
 ## Plugins
@@ -46,7 +46,7 @@ To extend this image simply create another Docker image, build it and run it.
 The image can easily be extended to include maven by creating your Dockerfile that looks like this. Build it and run the new image
 
 ```
-FROM docker.obi.aol.com/jenkins
+FROM vgadang/jenkins
 
 RUN apt-get update && apt-get install -y maven
 ```
@@ -56,7 +56,7 @@ RUN apt-get update && apt-get install -y maven
 For example to add additional plugins, you can create a Dockerfile that has the following (assuming the plugins are in directory called 'plugins'). Build it and run the new image
 
 ```
-FROM docker.obi.aol.com/jenkins
+FROM vgadang/jenkins
 
 COPY plugins /usr/share/jenkins/ref/plugins
 ```
@@ -65,7 +65,7 @@ COPY plugins /usr/share/jenkins/ref/plugins
 To add additional plugins, you can create a Dockerfile that has the following (assuming the jobs are in directory called 'jobs'). Build it and run the new image
 
 ```
-FROM docker.obi.aol.com/jenkins
+FROM vgadang/jenkins
 
 COPY jobs /usr/share/jenkins/ref/jobs
 ```
