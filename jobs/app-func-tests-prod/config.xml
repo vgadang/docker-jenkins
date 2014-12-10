@@ -11,7 +11,7 @@
   <keepDependencies>false</keepDependencies>
   <properties/>
   <scm class="hudson.plugins.cloneworkspace.CloneWorkspaceSCM" plugin="clone-workspace-scm@0.6">
-    <parentJobName>cmi-template-publish</parentJobName>
+    <parentJobName>app-deploy-prod</parentJobName>
     <criteria>Any</criteria>
   </scm>
   <canRoam>true</canRoam>
@@ -22,8 +22,16 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>echo &quot;Deploying the artifact to dev environment&quot;
-#ENV=dev APP_PORT=8110 bash -ex src/main/scripts/docker-deploy.sh hostname.dev.aol.com</command>
+      <command>JMETER=/home/b/bpsdv/jmeter/bin/jmeter
+JMETER_SCRIPT=src/test/jmeter/CMITemplate.jmx
+JMETER_RESULT=app/target/jmeter/results/CMITemplate.jtl
+JMETER_LOGS=app/target/jmeter/logs/CMITemplate.jmx.log
+PORT=8110
+PROTOCOL=http
+
+echo &quot;Functional testing&quot;
+#bash -ex $JMETER -n -t $JMETER_SCRIPT -l $JMETER_RESULT -j $JMETER_LOGS -Jhost=hostname.prod.aol.com -Jport=$PORT -Jprotocol=$PROTOCOL
+</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers>
@@ -47,9 +55,7 @@
             <subject>$PROJECT_DEFAULT_SUBJECT</subject>
             <body>$PROJECT_DEFAULT_CONTENT</body>
             <recipientProviders>
-              <hudson.plugins.emailext.plugins.recipients.DevelopersRecipientProvider/>
-              <hudson.plugins.emailext.plugins.recipients.RequesterRecipientProvider/>
-              <hudson.plugins.emailext.plugins.recipients.CulpritsRecipientProvider/>
+              <hudson.plugins.emailext.plugins.recipients.ListRecipientProvider/>
             </recipientProviders>
             <attachmentsPattern></attachmentsPattern>
             <attachBuildLog>false</attachBuildLog>
@@ -64,28 +70,16 @@
       <defaultContent>$DEFAULT_CONTENT</defaultContent>
       <attachmentsPattern></attachmentsPattern>
       <presendScript>$DEFAULT_PRESEND_SCRIPT</presendScript>
-      <attachBuildLog>false</attachBuildLog>
+      <attachBuildLog>true</attachBuildLog>
       <compressBuildLog>false</compressBuildLog>
       <replyTo>$DEFAULT_REPLYTO</replyTo>
       <saveOutput>false</saveOutput>
       <disabled>false</disabled>
     </hudson.plugins.emailext.ExtendedEmailPublisher>
-    <hudson.plugins.parameterizedtrigger.BuildTrigger plugin="parameterized-trigger@2.25">
-      <configs>
-        <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
-          <configs>
-            <hudson.plugins.parameterizedtrigger.CurrentBuildParameters/>
-          </configs>
-          <projects>cmi-template-func-tests-dev</projects>
-          <condition>SUCCESS</condition>
-          <triggerWithNoParameters>false</triggerWithNoParameters>
-        </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
-      </configs>
-    </hudson.plugins.parameterizedtrigger.BuildTrigger>
   </publishers>
   <buildWrappers>
     <org.jenkinsci.plugins.buildnamesetter.BuildNameSetter plugin="build-name-setter@1.3">
-      <template>cmi-template-#${ENV,var=&quot;SOURCE_BUILD_NUMBER&quot;}</template>
+      <template>app-#${ENV,var=&quot;SOURCE_BUILD_NUMBER&quot;}</template>
     </org.jenkinsci.plugins.buildnamesetter.BuildNameSetter>
   </buildWrappers>
 </project>

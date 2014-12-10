@@ -76,7 +76,7 @@ echo &quot;Version=${BUILD_NUMBER}&quot; &gt; version.properties
               <properties>SOURCE_BUILD_NUMBER=${BUILD_NUMBER}</properties>
             </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
           </configs>
-          <projects>cmi-template-int</projects>
+          <projects>app-int-tests</projects>
           <condition>SUCCESS</condition>
           <triggerWithNoParameters>false</triggerWithNoParameters>
         </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
@@ -85,7 +85,7 @@ echo &quot;Version=${BUILD_NUMBER}&quot; &gt; version.properties
   </publishers>
   <buildWrappers>
     <org.jenkinsci.plugins.buildnamesetter.BuildNameSetter plugin="build-name-setter@1.3">
-      <template>cmi-template-#${BUILD_NUMBER}</template>
+      <template>app-#${BUILD_NUMBER}</template>
     </org.jenkinsci.plugins.buildnamesetter.BuildNameSetter>
   </buildWrappers>
 </project>

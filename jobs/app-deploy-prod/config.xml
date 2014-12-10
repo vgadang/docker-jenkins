@@ -11,7 +11,7 @@
   <keepDependencies>false</keepDependencies>
   <properties/>
   <scm class="hudson.plugins.cloneworkspace.CloneWorkspaceSCM" plugin="clone-workspace-scm@0.6">
-    <parentJobName>cmi-template-build</parentJobName>
+    <parentJobName>app-publish</parentJobName>
     <criteria>Any</criteria>
   </scm>
   <canRoam>true</canRoam>
@@ -22,8 +22,8 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>echo &quot;Performing integration testing&quot;
-#bash -ex gradlew --profile integrationTest jacocoIntegrationTestReport</command>
+      <command>echo &quot;Deploying the artifact to prod environment&quot;
+#ENV=prod APP_PORT=8110 bash -ex src/main/scripts/docker-deploy.sh hostname.prod.aol.com</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers>
@@ -64,7 +64,7 @@
       <defaultContent>$DEFAULT_CONTENT</defaultContent>
       <attachmentsPattern></attachmentsPattern>
       <presendScript>$DEFAULT_PRESEND_SCRIPT</presendScript>
-      <attachBuildLog>true</attachBuildLog>
+      <attachBuildLog>false</attachBuildLog>
       <compressBuildLog>false</compressBuildLog>
       <replyTo>$DEFAULT_REPLYTO</replyTo>
       <saveOutput>false</saveOutput>
@@ -76,7 +76,7 @@
           <configs>
             <hudson.plugins.parameterizedtrigger.CurrentBuildParameters/>
           </configs>
-          <projects>cmi-template-cq</projects>
+          <projects>app-func-tests-prod</projects>
           <condition>SUCCESS</condition>
           <triggerWithNoParameters>false</triggerWithNoParameters>
         </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
@@ -85,7 +85,7 @@
   </publishers>
   <buildWrappers>
     <org.jenkinsci.plugins.buildnamesetter.BuildNameSetter plugin="build-name-setter@1.3">
-      <template>cmi-template-#${ENV,var=&quot;SOURCE_BUILD_NUMBER&quot;}</template>
+      <template>app-#${ENV,var=&quot;SOURCE_BUILD_NUMBER&quot;}</template>
     </org.jenkinsci.plugins.buildnamesetter.BuildNameSetter>
   </buildWrappers>
 </project>
