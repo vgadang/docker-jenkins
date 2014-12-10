@@ -1,7 +1,7 @@
 # Jenkins Pipeline Base
 
 ## Introduction
-This provides Docker image for a base Jenkins pipeline that can be used by  applications. This is derived from the official dockerfile/jenkins image with suuport for java 8 applications. Install docker on the host and follow the instructions below to get a base pipeline started. You can fill in the dtails of what each job of the pipeline does according to your requirements.
+This provides Docker image for a base Jenkins pipeline that can be used by  applications. This is derived from the official dockerfile/jenkins image with support for Java 8 applications. Install docker on the host and follow the instructions below to get a base pipeline started. You can fill in the dtails of what each job of the pipeline does according to your requirements.
 
 ## Quick Start
 The following command should get you started pretty quickly. It has most of the pipeline steps covered and all you need to do is fill in the details.
